@@ -1,0 +1,8 @@
+.classpath
+.mth
+.mtj.tmp
+.project
+.settings
+bin
+build.properties
+deployed
