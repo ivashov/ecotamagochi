@@ -1,0 +1,4 @@
+feed:Еда
+games:Игры
+maze:Лабиринт
+sorting:Сортировка
