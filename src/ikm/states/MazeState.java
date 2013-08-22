@@ -176,8 +176,8 @@ public class MazeState extends GameState {
 	public boolean clicked(int x, int y) {
 		int nx = posX;
 		int ny = posY;
-		int dx = x / 16 - nx;
-		int dy = y / 16 - ny;
+		int dx = x - nx * 16 - 8;
+		int dy = y - ny * 16 - 8;
 		
 		if (Math.abs(dx) > Math.abs(dy))
 			if (dx > 0)

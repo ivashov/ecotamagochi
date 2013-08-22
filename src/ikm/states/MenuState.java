@@ -75,7 +75,7 @@ public class MenuState extends GameState implements ButtonListener {
 			canvas.popState();
 			canvas.pushState(mazeState);
 		} else if (button == sortingButton) {
-			sortingState = new SortingState(canvas, game.getWorld());
+			sortingState = new SortingState(canvas, game.getWorld(), game.getCharacter());
 			canvas.popState();
 			canvas.pushState(sortingState);
 		}

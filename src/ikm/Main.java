@@ -139,7 +139,7 @@ public class Main extends MIDlet implements CommandListener {
 		}
 	}
 	
-	public final static int STORAGE_VERSION = 6;
+	public final static int STORAGE_VERSION = 5;
 	public void saveGame() throws RecordStoreException {
 		RecordStore rms = null;
 		try {

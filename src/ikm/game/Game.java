@@ -30,9 +30,9 @@ public class Game {
 	public final static int STEP_RATE = Settings.getEntry("step_rate"); // Seconds per step
 	public final static int ADAPTATION_DECREASE_RATE = Settings.getEntry("adaptation_decrease_rate");
 	
-	private Character character = new Character();
 	private World world = new World();
-	
+	private Character character = new Character(world);
+
 	private Hashtable foodStorage = new Hashtable();
 	
 	private long step = 0;

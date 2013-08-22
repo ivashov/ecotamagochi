@@ -19,6 +19,7 @@
 package ikm;
 
 import ikm.GameState.Clickable;
+import ikm.GameState.Dragable;
 import ikm.game.Food;
 import ikm.util.Maths;
 
@@ -27,27 +28,35 @@ import java.util.Vector;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.game.Sprite;
 
-public class FoodSelector implements Clickable {
+public class FoodSelector implements Clickable, Dragable {
 	public interface FoodListener {
 		void foodSelected(Food food);
 	}
 	
-	public static final int HEIGHT = 32;
+	public static final int HEIGHT = 50;
+	public static final int ITEM_WIDTH = 50;
+	public static final int ITEM_INTERVAL = 10;
 	
 	private int y;
 	private boolean hidden = true;
 	private Vector foods;
-	private int width;
+	private int screenWidth;
+	private int totalWidth;
 	private FoodListener listener;
+	
+	private int renderX = 0;
+	private boolean dragging = false;
+	private int cx, cy;
 	
 	public FoodSelector(int y, int width) {
 		this.y = y;
-		this.width = width;
+		this.screenWidth = width;
 	}
 	
 	public void setFood(Vector foods) {
 		this.foods = foods;
 		hidden = false;
+		totalWidth = foods.size() * (ITEM_WIDTH + ITEM_INTERVAL);
 	}
 	
 	public void paint(Graphics g) {
@@ -58,8 +67,7 @@ public class FoodSelector implements Clickable {
 		for (int i = 0; i < foodCount; i++) {
 			Food food = (Food) foods.elementAt(i);
 			Sprite foodSprite = (Sprite) food.getData();
-			
-			foodSprite.setPosition(Maths.posObject(width, HEIGHT, foodCount, i), y);
+			foodSprite.setPosition(renderX + i * (ITEM_WIDTH + ITEM_INTERVAL), y);
 			foodSprite.paint(g);
 		}
 	}
@@ -68,30 +76,67 @@ public class FoodSelector implements Clickable {
 		this.listener = listener;
 	}
 	
-	public boolean clicked(int x, int y) {
+	public boolean clicked(int xx, int yy) {
 		if (hidden || foods == null)
 			return false;
 		
-		int foodCount = foods.size();
-		for (int i = 0; i < foodCount; i++) {
-			Food food = (Food) foods.elementAt(i);
-			Sprite foodSprite = (Sprite) food.getData();
-			
-			int sx = foodSprite.getX();
-			int sy = foodSprite.getY();
-			int sw = foodSprite.getWidth();
-			int sh = foodSprite.getHeight();
-			
-			if (Maths.pointInRect(x, y, sx, sy, sw, sh)) {
-				hidden = true;
-				foods = null;
+		if (yy < y || yy > y + HEIGHT)
+			return false;
+		
+		cx = xx;
+		cy = yy;
+		
+		return true;
+	}
+	
+	public boolean draged(int xx, int yy) {
+		if (hidden || foods == null)
+			return false;
+		
+		if (yy < y || yy > y + HEIGHT)
+			return false;
 				
-				if (listener != null)
-					listener.foodSelected(food);
+		dragging = true;
+		renderX += (xx - cx);
+		cx = xx;
+		
+		renderX = Maths.clamp(renderX, -totalWidth + screenWidth, 0);
+		return true;
+	}
+	
+	public boolean released(int xx, int yy) {
+		if (hidden || foods == null)
+			return false;
+		
+		if (yy < y || yy > y + HEIGHT)
+			return false;
+		
+		
+		if (!dragging) {
+			int foodCount = foods.size();
+			for (int i = 0; i < foodCount; i++) {
+				Food food = (Food) foods.elementAt(i);
+				Sprite foodSprite = (Sprite) food.getData();
 				
-				return true;
+				int sx = foodSprite.getX();
+				int sy = foodSprite.getY();
+				int sw = foodSprite.getWidth();
+				int sh = foodSprite.getHeight();
+				
+				if (Maths.pointInRect(xx, yy, sx, sy, sw, sh)) {
+					hidden = true;
+					foods = null;
+					
+					if (listener != null)
+						listener.foodSelected(food);
+					
+					return true;
+				}
 			}
-		}	
-		return false;
+		}
+		
+		dragging = false;
+		
+		return true;
 	}
 }

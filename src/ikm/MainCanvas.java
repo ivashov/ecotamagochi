@@ -67,7 +67,10 @@ public class MainCanvas extends GameCanvas implements Runnable {
 		synchronized (this) {
 			currentState().clicked(x, y);
 			needUpdate = false;
-			this.notifyAll();
+			if (currentState().needExtraRedraw()) {
+				needUpdate = false;
+				this.notifyAll();
+			}
 		}
 	}
 	
@@ -75,13 +78,22 @@ public class MainCanvas extends GameCanvas implements Runnable {
 		synchronized (this) {
 			currentState().released(x, y);
 			needUpdate = false;
-			this.notifyAll();
+			if (currentState().needExtraRedraw()) {
+				needUpdate = false;
+				this.notifyAll();
+			}
 		}
 	}
 	
 	protected void pointerDragged(int x, int y) {
-		currentState().dragged(x, y);
-		needUpdate = false;
+		synchronized (this) {
+			currentState().dragged(x, y);
+			
+			if (currentState().needExtraRedraw()) {
+				needUpdate = false;
+				this.notifyAll();
+			}
+		}
 	}
 	
 	public void run() {

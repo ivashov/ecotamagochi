@@ -57,14 +57,13 @@ public class Res {
 	public static Image mazeMask;
 	
 	public static void initialize() throws IOException {
-		face = Image.createImage("/face/facestub.png");
+		face = Image.createImage("/face/face2.gif");
 		faceDead = Image.createImage("/face/facestubdead.png");
 		progressbar = Image.createImage("/progressbar.png");
 		button = Image.createImage("/button2.png");
 		foodImg = Image.createImage("/food.png");
 		tiles = Image.createImage("/mazetile.png");
 		
-
 		binBack = Image.createImage("/trash/back.png");
 		binPlastic = Image.createImage("/trash/bin-plastic.png");
 		binGlass = Image.createImage("/trash/bin-glass.png");
@@ -76,7 +75,7 @@ public class Res {
 	public static void loadFood(Game game) throws IOException {
 		Reader foodDesc = new InputStreamReader(Res.class.getResourceAsStream("/food.txt"));
 
-		for (int x = 0; x < foodImg.getWidth(); x += 32) {
+		for (;;) {
 			String line = StringUtils.readLine(foodDesc);
 			if (line == null)
 				break;
@@ -94,7 +93,7 @@ public class Res {
 
 				game.createFood(name, hunger, litter, hp, mood);
 				Food food = game.getFood(name);
-				food.setData(new Sprite(Image.createImage(foodImg, x, 0, 32, 32, Sprite.TRANS_NONE)));
+				food.setData(new Sprite(Image.createImage("/food/" + name)));
 				food.increaseCount(10);
 			} catch (NumberFormatException ex) {
 				break;

@@ -24,6 +24,7 @@ import ikm.Main;
 import ikm.MainCanvas;
 import ikm.Res;
 import ikm.Res.TrashItem;
+import ikm.Settings;
 import ikm.game.World;
 import ikm.util.Maths;
 
@@ -35,14 +36,18 @@ import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.game.Sprite;
 
 public class SortingState extends GameState {
+	public static final int SORTING_GAME_MOOD_EFFECT = Settings.getEntry("sorting_game_mood_effect");
+	
 	//private Vector fallingItems = new Vector();
 	private Sprite activeItem;
 	private int itemX;
 	private int itemType;
 	
 	private int itemsSuccess = 0;
+	private int itemsFail = 0;
 	
 	private World world;
+	private ikm.game.Character character;
 	
 	private Sprite missItem;
 	private Sprite binItem;
@@ -60,9 +65,10 @@ public class SortingState extends GameState {
 	private int colorIndex = 0;
 	private static final int[] BACK_COLORS = {0x1280a0, 0x2F6F8B, 0x4D5F77, 0x6B4F63, 0x883F4F, 0xA62F3B, 0xC41F27, 0xE20F13, 0xff0000};
 	
-	public SortingState(MainCanvas canvas, World world) {
+	public SortingState(MainCanvas canvas, World world, ikm.game.Character character) {
 		super("sorting", canvas);
 		this. world = world;
+		this.character = character;
 		
 		binBack1 = new Sprite(Res.binBack);
 		binBack2 = new Sprite(Res.binBack);
@@ -119,6 +125,7 @@ public class SortingState extends GameState {
 		
 		if (activeItem.getY() + activeItem.getHeight() > binPlastic.getY() + 5) {
 			missItem = activeItem;
+			itemsFail++;
 			colorIndex = BACK_COLORS.length - 1;
 			createItem();
 		}
@@ -173,17 +180,30 @@ public class SortingState extends GameState {
 		return true;
 	}
 	
-	public void released(int x, int y) {
+	public boolean released(int x, int y) {
+		if (super.released(x, y))
+			return true;
+		
 		pointerDown = false;
+		return true;
 	}
 	
-	public void dragged(int x, int y) {
+	public boolean dragged(int x, int y) {
+		if (super.dragged(x, y))
+			return true;
+		
 		px = x;
 		py = y;
 		pointerDown = true;
+		return true;
 	}
 	
 	public void shutdown() {
 		world.addTrash(-itemsSuccess);
+		character.changeMood((itemsSuccess - itemsFail) * SORTING_GAME_MOOD_EFFECT);
+	}
+	
+	public boolean needExtraRedraw() {
+		return false;
 	}
 }

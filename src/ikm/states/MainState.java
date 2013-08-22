@@ -67,12 +67,12 @@ public class MainState extends GameState implements ButtonListener, FoodListener
 		deadsprite = new Sprite(Res.faceDead);
 		
 		facesprite.setPosition(Maths.posCenter(canvas.getWidth(), facesprite.getWidth()),
-				Maths.posCenter(canvas.getHeight(), facesprite.getHeight()));
+				Maths.posCenter(canvas.getHeight(), facesprite.getHeight()) - 32);
 		deadsprite.setPosition(facesprite.getX(), facesprite.getY());
 		
-		hpBar = new ProgressBar(Maths.posObject(canvas.getWidth(), Res.progressbar.getWidth(), 3, 0), 10, 0xef0000, ikm.game.Character.INITIAL_VALUE);
-		hungerBar = new ProgressBar(Maths.posObject(canvas.getWidth(), Res.progressbar.getWidth(), 3, 1), 10, 0x00ff32, ikm.game.Character.INITIAL_VALUE);
-		moodBar = new ProgressBar(Maths.posObject(canvas.getWidth(), Res.progressbar.getWidth(), 3, 2), 10, 0x0043ef, ikm.game.Character.INITIAL_VALUE);
+		hpBar = new ProgressBar(Maths.posObject(canvas.getWidth(), Res.progressbar.getWidth(), 3, 0), 10, 0xef0000, ikm.game.Character.MAX_VALUE);
+		hungerBar = new ProgressBar(Maths.posObject(canvas.getWidth(), Res.progressbar.getWidth(), 3, 1), 10, 0x00ff32, ikm.game.Character.MAX_VALUE);
+		moodBar = new ProgressBar(Maths.posObject(canvas.getWidth(), Res.progressbar.getWidth(), 3, 2), 10, 0x0043ef, ikm.game.Character.MAX_VALUE);
 		
 		feedButton = new Button(Maths.posObject(canvas.getWidth(), Res.button.getWidth(), 2, 0), canvas.getHeight() - Res.button.getHeight(), "Feed");
 		feedButton.setListener(this);
@@ -80,7 +80,7 @@ public class MainState extends GameState implements ButtonListener, FoodListener
 		gamesButton = new Button(Maths.posObject(canvas.getWidth(), Res.button.getWidth(), 2, 1), canvas.getHeight() - Res.button.getHeight(), "Games");
 		gamesButton.setListener(this); 
 		
-		foodSelector = new FoodSelector(canvas.getHeight() - 72, canvas.getWidth());
+		foodSelector = new FoodSelector(canvas.getHeight() - 100, canvas.getWidth());
 		foodSelector.setListener(this);
 		
 		gamesMenuState = new MenuState("Games", canvas, game);
@@ -88,6 +88,7 @@ public class MainState extends GameState implements ButtonListener, FoodListener
 		addClickable(foodSelector);
 		addClickable(feedButton);
 		addClickable(gamesButton);
+		addDragable(foodSelector);
 		
 		lm.append(facesprite);
 	}
@@ -138,5 +139,9 @@ public class MainState extends GameState implements ButtonListener, FoodListener
 		synchronized (game) {
 			food.feed(character, game.getWorld());
 		}
+	}
+	
+	public boolean needExtraRedraw() {
+		return true;
 	}
 }
