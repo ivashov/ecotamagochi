@@ -29,6 +29,7 @@ import ikm.GameState;
 import ikm.MainCanvas;
 import ikm.ProgressBar;
 import ikm.Res;
+import ikm.Translation;
 import ikm.Button.ButtonListener;
 import ikm.FoodSelector.FoodListener;
 import ikm.game.Food;
@@ -78,10 +79,10 @@ public class MainState extends GameState implements ButtonListener, FoodListener
 		hungerBar = new ProgressBar(Maths.posObject(canvas.getWidth(), Res.progressbar.getWidth(), 3, 1), 10, 0x00ff32, ikm.game.Character.MAX_VALUE, Res.icoHunger);
 		moodBar = new ProgressBar(Maths.posObject(canvas.getWidth(), Res.progressbar.getWidth(), 3, 2), 10, 0x0043ef, ikm.game.Character.MAX_VALUE, Res.icoMood);
 		
-		feedButton = new Button(Maths.posObject(canvas.getWidth(), Res.button.getWidth(), 2, 0), canvas.getHeight() - Res.button.getHeight(), "Feed");
+		feedButton = new Button(Maths.posObject(canvas.getWidth(), Res.button.getWidth(), 2, 0), canvas.getHeight() - Res.button.getHeight(), Translation.tr("feed"));
 		feedButton.setListener(this);
 		
-		gamesButton = new Button(Maths.posObject(canvas.getWidth(), Res.button.getWidth(), 2, 1), canvas.getHeight() - Res.button.getHeight(), "Games");
+		gamesButton = new Button(Maths.posObject(canvas.getWidth(), Res.button.getWidth(), 2, 1), canvas.getHeight() - Res.button.getHeight(), Translation.tr("games"));
 		gamesButton.setListener(this); 
 		
 		foodSelector = new FoodSelector(canvas.getHeight() - 100, canvas.getWidth());

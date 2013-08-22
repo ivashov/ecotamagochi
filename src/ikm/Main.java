@@ -48,6 +48,24 @@ public class Main extends MIDlet implements CommandListener {
 			e.printStackTrace();
 			throw new RuntimeException("Can't load config");
 		}
+		
+		String transfile;
+		String locale = System.getProperty("microedition.locale");
+		System.out.println(locale);
+		if (locale.startsWith("ru")) {
+			transfile = "/l10n/ru.txt";
+		} else {
+			transfile = "/l10n/en.txt";
+		}
+		
+		try {
+			Reader reader = new InputStreamReader(Main.class.getResourceAsStream(transfile), "utf-8");
+			Translation.loadTranslation(reader);
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException("Can't load translation");
+		}
 	}
 	
 	private Game game = new Game();

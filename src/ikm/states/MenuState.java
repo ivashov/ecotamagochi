@@ -26,6 +26,7 @@ import ikm.Button;
 import ikm.GameState;
 import ikm.MainCanvas;
 import ikm.Res;
+import ikm.Translation;
 import ikm.Button.ButtonListener;
 import ikm.game.Game;
 import ikm.util.Maths;
@@ -45,8 +46,8 @@ public class MenuState extends GameState implements ButtonListener {
 		this.game = game;
 		centerX = Maths.posCenter(canvas.getWidth(), Res.button.getWidth());
 		
-		mazeButton = new Button(centerX, 30, "Maze");
-		sortingButton = new Button(centerX, 70, "Sorting");
+		mazeButton = new Button(centerX, 30, Translation.tr("maze"));
+		sortingButton = new Button(centerX, 70, Translation.tr("sorting"));
 		
 		addClickable(mazeButton);
 		addClickable(sortingButton);

@@ -24,6 +24,7 @@ import ikm.MainCanvas;
 import ikm.Res;
 import ikm.Res.TrashItem;
 import ikm.Settings;
+import ikm.Translation;
 import ikm.game.World;
 import ikm.util.Maths;
 
@@ -32,6 +33,7 @@ import javax.microedition.lcdui.game.Sprite;
 
 public class SortingState extends GameState {
 	public static final int SORTING_GAME_MOOD_EFFECT = Settings.getEntry("sorting_game_mood_effect");
+	public static final String ITEMS_LEFT = Translation.tr("items_left");
 	
 	//private Vector fallingItems = new Vector();
 	private Sprite activeItem;
@@ -40,6 +42,7 @@ public class SortingState extends GameState {
 	
 	private int itemsSuccess = 0;
 	private int itemsFail = 0;
+	private int remain;
 	
 	private World world;
 	private ikm.game.Character character;
@@ -59,6 +62,7 @@ public class SortingState extends GameState {
 	private int px, py;
 	private int colorIndex = 0;
 	private static final int[] BACK_COLORS = {0x1280a0, 0x2F6F8B, 0x4D5F77, 0x6B4F63, 0x883F4F, 0xA62F3B, 0xC41F27, 0xE20F13, 0xff0000};
+	private String itemsLeft;
 	
 	public SortingState(MainCanvas canvas, World world, ikm.game.Character character) {
 		super("sorting", canvas);
@@ -82,6 +86,9 @@ public class SortingState extends GameState {
 		binBack3.setPosition(binPaper.getX(), binPaper.getY());
 		
 		createItem();
+		
+		remain = world.getTrash();
+		changeItemsLeftString(remain);
 	}
 	
 	private void createItem() {
@@ -115,6 +122,12 @@ public class SortingState extends GameState {
 				|| touchesBucket(activeItem, binPaper) && itemType == 0) {
 			binItem = activeItem;
 			itemsSuccess++;
+			remain --;
+			changeItemsLeftString(remain);
+			
+			if (remain == 0)
+				canvas.popState();
+			
 			createItem();
 		}
 		
@@ -159,6 +172,10 @@ public class SortingState extends GameState {
 		
 		if (missItem != null)
 			missItem.paint(g);
+		
+		g.setColor(0x30aaff);
+		System.out.println(itemsLeft);
+		g.drawString(itemsLeft, canvas.getWidth() / 2, 8, Graphics.TOP | Graphics.HCENTER);
 	}
 
 	public int getUpdateRate() {
@@ -200,5 +217,9 @@ public class SortingState extends GameState {
 	
 	public boolean needExtraRedraw() {
 		return false;
+	}
+	
+	private void changeItemsLeftString(int items) {
+		itemsLeft = ITEMS_LEFT + ": " + items;
 	}
 }

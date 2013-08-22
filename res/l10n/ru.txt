@@ -2,3 +2,4 @@ feed:Еда
 games:Игры
 maze:Лабиринт
 sorting:Сортировка
+items_left:Осталось

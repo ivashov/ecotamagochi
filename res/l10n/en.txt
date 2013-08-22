@@ -2,3 +2,4 @@ feed:Feed
 games:Games
 maze:Maze
 sorting:Sorting
+items_left:Items left
