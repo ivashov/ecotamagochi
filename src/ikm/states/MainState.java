@@ -29,6 +29,7 @@ import ikm.GameState;
 import ikm.MainCanvas;
 import ikm.ProgressBar;
 import ikm.Res;
+import ikm.Splash;
 import ikm.Translation;
 import ikm.Button.ButtonListener;
 import ikm.FoodSelector.FoodListener;
@@ -57,6 +58,7 @@ public class MainState extends GameState implements ButtonListener, FoodListener
 	private FoodSelector foodSelector;
 	
 	private MenuState gamesMenuState;
+	private Splash splash;
 	
 	public MainState(Game game, MainCanvas canvas) {
 		super("Main state", canvas);
@@ -90,6 +92,7 @@ public class MainState extends GameState implements ButtonListener, FoodListener
 		
 		gamesMenuState = new MenuState("Games", canvas, game);
 		
+		splash = new Splash(canvas.getWidth() / 2, canvas.getHeight() / 2);
 		addClickable(foodSelector);
 		addClickable(feedButton);
 		addClickable(gamesButton);
@@ -108,7 +111,7 @@ public class MainState extends GameState implements ButtonListener, FoodListener
 		feedButton.paint(g);
 		gamesButton.paint(g);
 		foodSelector.paint(g);
-		
+		splash.paint(g);
 	}
 
 	public int getUpdateRate() {
@@ -137,6 +140,7 @@ public class MainState extends GameState implements ButtonListener, FoodListener
 	
 	public void buttonClicked(Button button) {
 		if (button == feedButton) {
+			splash.showSplash("testtest");
 			foodSelector.setFood(game.getAvailableFood());
 		} else if (button == gamesButton) {
 			canvas.pushState(gamesMenuState);

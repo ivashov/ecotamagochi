@@ -27,12 +27,11 @@ import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.game.GameCanvas;
 
 public class MainCanvas extends GameCanvas implements Runnable {
-	public static final int FRAME_TIME = 50;
+	public static final int FRAME_TIME = 100;
 	public Vector states = new Vector();
 	
 	private boolean cont = true;
-	private boolean needUpdate = true;
-	private long last;
+	private long gameTime;
 
 	private Image darkImage;
 	
@@ -43,9 +42,8 @@ public class MainCanvas extends GameCanvas implements Runnable {
 	public void pushState(GameState state) {
 		synchronized (this) {
 			states.addElement(state);
-			needUpdate = false;
 			this.notifyAll();
-			last = System.currentTimeMillis();
+			gameTime = System.currentTimeMillis();
 		}
 	}
 	
@@ -66,9 +64,7 @@ public class MainCanvas extends GameCanvas implements Runnable {
 	protected void pointerPressed(int x, int y) {
 		synchronized (this) {
 			currentState().clicked(x, y);
-			needUpdate = false;
 			if (currentState().needExtraRedraw()) {
-				needUpdate = false;
 				this.notifyAll();
 			}
 		}
@@ -77,9 +73,7 @@ public class MainCanvas extends GameCanvas implements Runnable {
 	protected void pointerReleased(int x, int y) {
 		synchronized (this) {
 			currentState().released(x, y);
-			needUpdate = false;
 			if (currentState().needExtraRedraw()) {
-				needUpdate = false;
 				this.notifyAll();
 			}
 		}
@@ -88,33 +82,35 @@ public class MainCanvas extends GameCanvas implements Runnable {
 	protected void pointerDragged(int x, int y) {
 		synchronized (this) {
 			currentState().dragged(x, y);
-			
 			if (currentState().needExtraRedraw()) {
-				needUpdate = false;
 				this.notifyAll();
 			}
 		}
 	}
 	
+	public void redraw(Graphics g) {
+		currentState().render(g, previousState());
+		flushGraphics();
+	}
+	
 	public void run() {
 		Graphics g = getGraphics();
 		darkImage = generateTransparentImage();
-		last = System.currentTimeMillis();
+		gameTime = System.currentTimeMillis();
 		
 		while (cont) {
 			synchronized (this) {
 				GameState state = currentState();
 				int rate = state.getUpdateRate();
 
-				state.render(g, previousState());
-				flushGraphics();
-				if (needUpdate) {
+				redraw(g);
+				
+				if (System.currentTimeMillis() >= gameTime) {
 					state.update();
-					last += rate;
+					gameTime += rate;
 				}
-				needUpdate = true;
 
-				long sleep = last - System.currentTimeMillis();
+				long sleep = gameTime - System.currentTimeMillis();
 
 				if (sleep <= 0)
 					sleep = 1;

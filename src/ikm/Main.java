@@ -51,7 +51,6 @@ public class Main extends MIDlet implements CommandListener {
 		
 		String transfile;
 		String locale = System.getProperty("microedition.locale");
-		System.out.println(locale);
 		if (locale.startsWith("ru")) {
 			transfile = "/l10n/ru.txt";
 		} else {

@@ -174,7 +174,6 @@ public class SortingState extends GameState {
 			missItem.paint(g);
 		
 		g.setColor(0x30aaff);
-		System.out.println(itemsLeft);
 		g.drawString(itemsLeft, canvas.getWidth() / 2, 8, Graphics.TOP | Graphics.HCENTER);
 	}
 
