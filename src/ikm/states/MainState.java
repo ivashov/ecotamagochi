@@ -126,7 +126,12 @@ public class MainState extends GameState implements ButtonListener, FoodListener
 		
 		if (character.isDead()) {
 			lm.remove(facesprite);
-			lm.append(deadsprite);
+			lm.insert(deadsprite, 0);
+			
+			removeClickable(feedButton);
+			removeClickable(gamesButton);
+			removeClickable(foodSelector);
+			removeDragable(foodSelector);
 		}
 	}
 	

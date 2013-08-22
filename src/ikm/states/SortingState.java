@@ -125,7 +125,7 @@ public class SortingState extends GameState {
 			remain --;
 			changeItemsLeftString(remain);
 			
-			if (remain == 0)
+			if (remain < 0)
 				canvas.popState();
 			
 			createItem();
