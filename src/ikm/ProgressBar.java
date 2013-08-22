@@ -21,11 +21,12 @@ package ikm;
 import ikm.util.Maths;
 
 import javax.microedition.lcdui.Graphics;
+import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.game.Sprite;
 
 public class ProgressBar {
-	public static final int BAR_X = 16, BAR_Y = 3;
-	public static final int WIDTH_X = 48, WIDTH_Y = 14;
+	public static final int BAR_X = 19, BAR_Y = 6;
+	public static final int WIDTH_X = 44, WIDTH_Y = 7;
 	
 	private Sprite sprite;
 
@@ -34,10 +35,12 @@ public class ProgressBar {
 	
 	private int x, y;
 	private int currentValue = 0;
+	private Image icon;
 	
-	public ProgressBar(int x, int y, int color, int maxValue) {
+	public ProgressBar(int x, int y, int color, int maxValue, Image icon) {
 		this.color = color;
 		this.maxValue = maxValue;
+		this.icon = icon;
 		
 		this.x = x;
 		this.y = y;
@@ -53,6 +56,7 @@ public class ProgressBar {
 	public void paint(Graphics g) {
 		g.setColor(color);
 		sprite.paint(g);
+		g.drawImage(icon, x - 12, y - 8, Graphics.TOP | Graphics.LEFT);
 		
 		int width = WIDTH_X * currentValue / maxValue;
 		g.fillRect(x + BAR_X, y + BAR_Y, width, WIDTH_Y);

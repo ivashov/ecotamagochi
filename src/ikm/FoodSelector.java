@@ -96,9 +96,11 @@ public class FoodSelector implements Clickable, Dragable {
 		if (yy < y || yy > y + HEIGHT)
 			return false;
 				
-		dragging = true;
-		renderX += (xx - cx);
-		cx = xx;
+		if (dragging || Math.abs(xx - cx) > 4) {
+			dragging = true;
+			renderX += (xx - cx);
+			cx = xx;
+		}
 		
 		renderX = Maths.clamp(renderX, -totalWidth + screenWidth, 0);
 		return true;

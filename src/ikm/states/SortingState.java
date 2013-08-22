@@ -19,7 +19,6 @@
 package ikm.states;
 
 import ikm.GameState;
-import ikm.Log;
 import ikm.Main;
 import ikm.MainCanvas;
 import ikm.Res;
@@ -28,11 +27,7 @@ import ikm.Settings;
 import ikm.game.World;
 import ikm.util.Maths;
 
-import java.util.Enumeration;
-import java.util.Vector;
-
 import javax.microedition.lcdui.Graphics;
-import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.game.Sprite;
 
 public class SortingState extends GameState {

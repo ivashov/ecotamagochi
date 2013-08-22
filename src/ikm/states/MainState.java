@@ -38,6 +38,7 @@ import ikm.util.Maths;
 
 public class MainState extends GameState implements ButtonListener, FoodListener {
 	private LayerManager lm = new LayerManager();
+	private Sprite background;
 	private Sprite facesprite;
 	private Sprite deadsprite;
 	
@@ -63,6 +64,9 @@ public class MainState extends GameState implements ButtonListener, FoodListener
 		character = game.getCharacter();
 		world = game.getWorld();
 
+		background = new Sprite(Res.back);
+		background.setPosition(Maths.posCenter(canvas.getWidth(), background.getWidth()),
+				Maths.posCenter(canvas.getHeight(), background.getHeight()) - 50);
 		facesprite = new Sprite(Res.face);
 		deadsprite = new Sprite(Res.faceDead);
 		
@@ -70,9 +74,9 @@ public class MainState extends GameState implements ButtonListener, FoodListener
 				Maths.posCenter(canvas.getHeight(), facesprite.getHeight()) - 32);
 		deadsprite.setPosition(facesprite.getX(), facesprite.getY());
 		
-		hpBar = new ProgressBar(Maths.posObject(canvas.getWidth(), Res.progressbar.getWidth(), 3, 0), 10, 0xef0000, ikm.game.Character.MAX_VALUE);
-		hungerBar = new ProgressBar(Maths.posObject(canvas.getWidth(), Res.progressbar.getWidth(), 3, 1), 10, 0x00ff32, ikm.game.Character.MAX_VALUE);
-		moodBar = new ProgressBar(Maths.posObject(canvas.getWidth(), Res.progressbar.getWidth(), 3, 2), 10, 0x0043ef, ikm.game.Character.MAX_VALUE);
+		hpBar = new ProgressBar(Maths.posObject(canvas.getWidth(), Res.progressbar.getWidth(), 3, 0), 10, 0xef0000, ikm.game.Character.MAX_VALUE, Res.icoHealth);
+		hungerBar = new ProgressBar(Maths.posObject(canvas.getWidth(), Res.progressbar.getWidth(), 3, 1), 10, 0x00ff32, ikm.game.Character.MAX_VALUE, Res.icoHunger);
+		moodBar = new ProgressBar(Maths.posObject(canvas.getWidth(), Res.progressbar.getWidth(), 3, 2), 10, 0x0043ef, ikm.game.Character.MAX_VALUE, Res.icoMood);
 		
 		feedButton = new Button(Maths.posObject(canvas.getWidth(), Res.button.getWidth(), 2, 0), canvas.getHeight() - Res.button.getHeight(), "Feed");
 		feedButton.setListener(this);
@@ -91,12 +95,10 @@ public class MainState extends GameState implements ButtonListener, FoodListener
 		addDragable(foodSelector);
 		
 		lm.append(facesprite);
+		lm.append(background);
 	}
 	
-	public void paint(Graphics g) {
-		g.setColor(110, 255, 200);
-		g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-		
+	public void paint(Graphics g) {		
 		lm.paint(g, 0, 0);
 		hpBar.paint(g);
 		hungerBar.paint(g);

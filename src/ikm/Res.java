@@ -56,9 +56,12 @@ public class Res {
 
 	public static Image mazeMask;
 	
+	public static Image icoHealth, icoHunger, icoMood;
+	public static Image back;
+	
 	public static void initialize() throws IOException {
-		face = Image.createImage("/face/face2.gif");
-		faceDead = Image.createImage("/face/facestubdead.png");
+		face = Image.createImage("/face/face1.png");
+		faceDead = Image.createImage("/face/face1dead.png");
 		progressbar = Image.createImage("/progressbar.png");
 		button = Image.createImage("/button2.png");
 		foodImg = Image.createImage("/food.png");
@@ -70,6 +73,12 @@ public class Res {
 		binPaper = Image.createImage("/trash/bin-paper.png");
 
 		mazeMask = Image.createImage("/mazemask.png");
+		
+		icoHealth = Image.createImage("/icons/ico_health.png");
+		icoHunger = Image.createImage("/icons/ico_hungry.png");
+		icoMood = Image.createImage("/icons/ico_happy.png");
+		
+		back = Image.createImage("/scene_day.jpg");
 	}
 	
 	public static void loadFood(Game game) throws IOException {
