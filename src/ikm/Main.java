@@ -85,13 +85,8 @@ public class Main extends MIDlet implements CommandListener {
 			throws MIDletStateChangeException {
 		if (canvas != null) {
 			try {
-				while (canvas.back())
-					;
-				canvas.currentState().shutdown();
-				
-				synchronized (canvas) {
-					saveGame();
-				}
+				canvas.stop();
+				saveGame();
 			} catch (RecordStoreException e) {
 				e.printStackTrace();
 			}
@@ -110,7 +105,7 @@ public class Main extends MIDlet implements CommandListener {
 			throw new MIDletStateChangeException("Cannot load resources");
 		}
 		
-		canvas = new MainCanvas();
+		canvas = new MainCanvas(this);
 		state = new MainState(game, canvas);
 		canvas.pushState(state);
 		canvas.setCommandListener(this);
@@ -271,5 +266,21 @@ public class Main extends MIDlet implements CommandListener {
 			if (rms != null)
 				rms.closeRecordStore();
 		}
+	}
+	
+	public void restart() {
+		canvas.stop();
+		
+		game = new Game();
+		canvas = new MainCanvas(this);
+		state = new MainState(game, canvas);
+		canvas.pushState(state);
+		
+		canvas.setCommandListener(this);
+		canvas.addCommand(backCommand);
+		
+		display.setCurrent(canvas);
+		Thread thread = new Thread(canvas, "Game thread restarted");
+		thread.start();
 	}
 }

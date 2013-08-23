@@ -60,10 +60,12 @@ public class MainState extends GameState implements ButtonListener, FoodListener
 	
 	private Button feedButton;
 	private Button gamesButton;
+	private Button menuButton;
 	
 	private FoodSelector foodSelector;
 	
-	private MenuState gamesMenuState;
+	private GameMenuState gamesMenuState;
+	private MenuState menuState;
 	private Splash splash;
 	
 	public MainState(Game game, MainCanvas canvas) {
@@ -87,21 +89,26 @@ public class MainState extends GameState implements ButtonListener, FoodListener
 		hungerBar = new ProgressBar(Maths.posObject(canvas.getWidth(), Res.progressbar.getWidth(), 3, 1), 10, 0x00ff32, ikm.game.Character.MAX_VALUE, Res.icoHunger);
 		moodBar = new ProgressBar(Maths.posObject(canvas.getWidth(), Res.progressbar.getWidth(), 3, 2), 10, 0x0043ef, ikm.game.Character.MAX_VALUE, Res.icoMood);
 		
-		feedButton = new Button(Maths.posObject(canvas.getWidth(), Res.button.getWidth(), 2, 0), canvas.getHeight() - Res.button.getHeight(), Translation.tr("feed"));
+		feedButton = new Button(Maths.posObject(canvas.getWidth(), Res.miniButton.getWidth(), 3, 0), canvas.getHeight() - Res.miniButton.getHeight() - 8, Translation.tr("feed"), true);
 		feedButton.setListener(this);
 		
-		gamesButton = new Button(Maths.posObject(canvas.getWidth(), Res.button.getWidth(), 2, 1), canvas.getHeight() - Res.button.getHeight(), Translation.tr("games"));
+		gamesButton = new Button(Maths.posObject(canvas.getWidth(), Res.miniButton.getWidth(), 3, 1), canvas.getHeight() - Res.miniButton.getHeight() - 8, Translation.tr("games"), true);
 		gamesButton.setListener(this); 
+		
+		menuButton = new Button(Maths.posObject(canvas.getWidth(), Res.miniButton.getWidth(), 3, 2), canvas.getHeight() - Res.miniButton.getHeight() - 8, Translation.tr("menu"), true);
+		menuButton.setListener(this);
 		
 		foodSelector = new FoodSelector(canvas.getHeight() - 100, canvas.getWidth());
 		foodSelector.setListener(this);
 		
-		gamesMenuState = new MenuState("Games", canvas, game);
+		gamesMenuState = new GameMenuState("Games", canvas, game);
+		menuState = new MenuState("Menu", canvas);
 		
 		splash = new Splash(canvas.getWidth() / 2, canvas.getHeight() / 2, canvas);
 		addClickable(foodSelector);
 		addClickable(feedButton);
 		addClickable(gamesButton);
+		addClickable(menuButton);
 		addDragable(foodSelector);
 		
 		lm.append(facesprite);
@@ -116,6 +123,7 @@ public class MainState extends GameState implements ButtonListener, FoodListener
 		
 		feedButton.paint(g);
 		gamesButton.paint(g);
+		menuButton.paint(g);
 		foodSelector.paint(g);
 		splash.paint(g);
 	}
@@ -190,6 +198,7 @@ public class MainState extends GameState implements ButtonListener, FoodListener
 	
 	public void buttonClicked(Button button) {
 		if (button == feedButton) {
+			System.out.println("qweqweqweqweqwe");
 			if (character.getMood() < MOOD_FOOD_REJECT && character.getHunger() > Character.MAX_VALUE / 5) {
 				splash.showSplash(Translation.tr("dont_want_eat"));
 			} else {
@@ -201,6 +210,8 @@ public class MainState extends GameState implements ButtonListener, FoodListener
 			} else {
 				canvas.pushState(gamesMenuState);
 			}
+		} else if (button == menuButton) {
+			canvas.pushState(menuState);
 		}
 	}
 	

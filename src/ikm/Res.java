@@ -44,7 +44,7 @@ public class Res {
 	public static Image faceDead;
 	public static Image progressbar;
 	public static Image button;
-	public static Image foodImg;
+	public static Image miniButton;
 	public static Image tiles;
 	
 	public static TrashItem[] trash;
@@ -58,10 +58,9 @@ public class Res {
 	
 	public static Image icoHealth, icoHunger, icoMood;
 	public static Image back;
-	public static Image backSorting;
 	
 	public static void initialize() throws IOException {
-		if (true) {
+		if (false) {
 			face = Image.createImage("/face/face1.png");
 			faceDead = Image.createImage("/face/face1dead.png");
 			back = Image.createImage("/scene_day.jpg");
@@ -78,7 +77,7 @@ public class Res {
 
 		progressbar = Image.createImage("/progressbar.png");
 		button = Image.createImage("/button2.png");
-		foodImg = Image.createImage("/food.png");
+		miniButton = Image.createImage("/button3.png");
 		tiles = Image.createImage("/mazetile.png");
 		
 		binBack = Image.createImage("/trash/back.png");
@@ -91,8 +90,6 @@ public class Res {
 		icoHealth = Image.createImage("/icons/ico_health.png");
 		icoHunger = Image.createImage("/icons/ico_hungry.png");
 		icoMood = Image.createImage("/icons/ico_happy.png");
-		
-		backSorting = Image.createImage("/menu_background.jpg");
 	}
 	
 	public static void loadFood(Game game) throws IOException {

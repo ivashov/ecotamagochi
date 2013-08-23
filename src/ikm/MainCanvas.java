@@ -18,8 +18,6 @@
 
 package ikm;
 
-import ikm.game.Game;
-
 import java.util.Vector;
 
 import javax.microedition.lcdui.Graphics;
@@ -35,9 +33,12 @@ public class MainCanvas extends GameCanvas implements Runnable {
 
 	private Image darkImage;
 	private Graphics g;
+	private Main main;
 	
-	protected MainCanvas() {
+	protected MainCanvas(Main main) {
 		super(false);
+		
+		this.main = main;
 	}
 	
 	public void pushState(GameState state) {
@@ -96,6 +97,17 @@ public class MainCanvas extends GameCanvas implements Runnable {
 		}
 	}
 	
+	public void stop() {
+		synchronized (this) {
+			while (back())
+				;
+			currentState().shutdown();
+			
+			cont = false;
+			notifyAll();
+		}
+	}
+	
 	public void run() {
 		g = getGraphics();
 		darkImage = generateTransparentImage();
@@ -148,6 +160,13 @@ public class MainCanvas extends GameCanvas implements Runnable {
 			return true;
 		} else {
 			return false;
+		}
+	}
+
+	public void restart() {
+		synchronized(this) {
+			notifyAll();
+			main.restart();
 		}
 	}
 }

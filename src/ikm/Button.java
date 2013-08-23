@@ -31,20 +31,31 @@ public class Button implements Clickable {
 	}
 	
 	private int x, y;
-	private int width = Res.button.getWidth();
-	private int height = Res.button.getHeight();
+	private int width;
+	private int height;
 	
 	private Sprite sprite;
 	private String text;
 	private ButtonListener listener;
 	
 	public Button(int x, int y, String text) {
+		this(x, y, text, false);
+	}
+	
+	public Button(int x, int y, String text, boolean isMini) {
 		this.x = x;
 		this.y = y;
 		this.text = text;
 		
-		sprite = new Sprite(Res.button);
+		if (isMini)
+			sprite = new Sprite(Res.miniButton);
+		else
+			sprite = new Sprite(Res.button);
+		
 		sprite.setPosition(x, y);
+		
+		width = sprite.getWidth();
+		height = sprite.getHeight();
 	}
 	
 	public void paint(Graphics g) {
@@ -59,13 +70,11 @@ public class Button implements Clickable {
 		this.listener = listener;
 	}
 	
-	
 	public boolean clicked(int px, int py) {
 		if (listener != null && Maths.pointInRect(px, py, x, y, width, height)) {
 			listener.buttonClicked(this);
 			return true;
 		}
 		return false;
-
 	}
 }
