@@ -64,14 +64,15 @@ public class Character {
 		if (Math.abs(hpDelta) < 10)
 			hpDelta = 0;
 		else
-			hpDelta -= Maths.sign(hpDelta) * 10 * (int) time;
+			hpDelta -= Maths.sign(hpDelta) * 3 * (int) time;
 		
 		// 5. Trash in world decreased mood and health
-		int hpChange = (int) time * world.getTrash() * TRASH_HEALTH_EFFECT / 100;
-		int moodChange = (int) time * world.getTrash() * TRASH_MOOD_EFFECT / 100;
-		
-		changeHp(-hpChange);
-		changeMood(-moodChange);
+		if (world.getTrash() > 10) {
+			int hpChange = (int) time * world.getTrash() * TRASH_HEALTH_EFFECT / 100;
+			int moodChange = (int) time * world.getTrash() * TRASH_MOOD_EFFECT / 100;
+			changeHp(-hpChange);
+			changeMood(-moodChange);
+		}
 	}
 
 	public int getHp() {

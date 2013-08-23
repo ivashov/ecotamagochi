@@ -122,7 +122,7 @@ public class MainState extends GameState implements ButtonListener, FoodListener
 	
 	private int findProblems(int[] arr) {
 		int c = 0;
-		if (world.getTrash() > 15)
+		if (world.getTrash() >= 10)
 			arr[c++] = 0;
 		
 		if (character.getHunger() < Character.EAT_STARVATION)
@@ -174,8 +174,8 @@ public class MainState extends GameState implements ButtonListener, FoodListener
 			hungerBar.setCurrentValue(character.getHunger());
 			moodBar.setCurrentValue(character.getMood());
 		}
-		
-		showAlert();
+		if (!character.isDead())
+			showAlert();
 		
 		if (character.isDead()) {
 			lm.remove(facesprite);

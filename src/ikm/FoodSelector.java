@@ -80,8 +80,10 @@ public class FoodSelector implements Clickable, Dragable {
 		if (hidden || foods == null)
 			return false;
 		
-		if (yy < y || yy > y + HEIGHT)
+		if (yy < y || yy > y + HEIGHT) {
+			hidden = true;
 			return false;
+		}
 		
 		cx = xx;
 		cy = yy;

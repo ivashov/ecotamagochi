@@ -8,3 +8,4 @@ i_am_hunger:I want to eat
 i_am_depression:I am boring
 dont_want_eat:Don't want eat
 dont_want_play:Don't want play
+too_many_trash:Too many trash
