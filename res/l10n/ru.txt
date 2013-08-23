@@ -3,3 +3,8 @@ games:Игры
 maze:Лабиринт
 sorting:Сортировка
 items_left:Осталось
+i_am_ill:Я болен
+i_am_hungry:Я голоден
+i_am_depression:Я в полохом настроении
+dont_want_eat:Не хочу есть
+dont_want_play:Не хочу играть

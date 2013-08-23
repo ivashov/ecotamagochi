@@ -58,6 +58,7 @@ public class Res {
 	
 	public static Image icoHealth, icoHunger, icoMood;
 	public static Image back;
+	public static Image backSorting;
 	
 	public static void initialize() throws IOException {
 		if (true) {
@@ -91,7 +92,7 @@ public class Res {
 		icoHunger = Image.createImage("/icons/ico_hungry.png");
 		icoMood = Image.createImage("/icons/ico_happy.png");
 		
-		
+		backSorting = Image.createImage("/menu_background.jpg");
 	}
 	
 	public static void loadFood(Game game) throws IOException {

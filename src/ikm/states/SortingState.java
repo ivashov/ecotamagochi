@@ -30,6 +30,7 @@ import ikm.util.Maths;
 
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
+import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.game.Sprite;
 
 public class SortingState extends GameState {
@@ -64,6 +65,8 @@ public class SortingState extends GameState {
 	private int colorIndex = 0;
 	private static final int[] BACK_COLORS = {0x1280a0, 0x2F6F8B, 0x4D5F77, 0x6B4F63, 0x883F4F, 0xA62F3B, 0xC41F27, 0xE20F13, 0xff0000};
 	private String itemsLeft;
+	private Sprite background;
+	private Sprite background2;
 	
 	public SortingState(MainCanvas canvas, World world, ikm.game.Character character) {
 		super("sorting", canvas);
@@ -85,6 +88,14 @@ public class SortingState extends GameState {
 		binBack1.setPosition(binPlastic.getX(), binPlastic.getY());
 		binBack2.setPosition(binGlass.getX(), binGlass.getY());
 		binBack3.setPosition(binPaper.getX(), binPaper.getY());
+		
+		background = new Sprite(Res.back);
+		background.setPosition(-313, -80);
+		
+		Image tmp = Image.createImage(Res.back, 313, 80 + canvas.getHeight() - 63, canvas.getWidth(), 63, 0);
+		
+		background2 = new Sprite(tmp);
+		background2.setPosition(0, canvas.getHeight() - 63);
 		
 		createItem();
 		
@@ -149,13 +160,17 @@ public class SortingState extends GameState {
 	}
 
 	public void paint(Graphics g) {
-		final int backColor = BACK_COLORS[colorIndex];
+		/*final int backColor = BACK_COLORS[colorIndex];
 		if (colorIndex > 0)
 			colorIndex--;
 		
-		g.setColor(backColor);
-		g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-		
+		if (colorIndex > 0) {
+			g.setColor(backColor);
+			g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+		} else {
+			background.paint(g);
+		}*/
+		background.paint(g);
 		binBack1.paint(g);
 		binBack2.paint(g);
 		binBack3.paint(g);
@@ -164,9 +179,11 @@ public class SortingState extends GameState {
 		if (binItem != null)
 			binItem.paint(g);
 		
-		g.setColor(backColor);
-		g.fillRect(0, canvas.getHeight() - 63, canvas.getWidth(), 63);
+		//g.setColor(backColor);
+		//g.fillRect(0, canvas.getHeight() - 63, canvas.getWidth(), 63);
 
+		background2.paint(g);
+		
 		binPlastic.paint(g);
 		binGlass.paint(g);
 		binPaper.paint(g);
@@ -175,8 +192,8 @@ public class SortingState extends GameState {
 			missItem.paint(g);
 		
 		g.setFont(Main.font);
-		g.setColor(0x30aaff);
-		g.drawString(itemsLeft, canvas.getWidth() / 2, 8, Graphics.TOP | Graphics.HCENTER);
+		g.setColor(0x003399);
+		g.drawString(itemsLeft, canvas.getWidth() / 2 + 50, 16, Graphics.TOP | Graphics.HCENTER);
 	}
 
 	public int getUpdateRate() {

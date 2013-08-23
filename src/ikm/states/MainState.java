@@ -190,13 +190,13 @@ public class MainState extends GameState implements ButtonListener, FoodListener
 	
 	public void buttonClicked(Button button) {
 		if (button == feedButton) {
-			if (character.getMood() < MOOD_FOOD_REJECT) {
+			if (character.getMood() < MOOD_FOOD_REJECT && character.getHunger() > Character.MAX_VALUE / 5) {
 				splash.showSplash(Translation.tr("dont_want_eat"));
 			} else {
 				foodSelector.setFood(game.getAvailableFood());
 			}
 		} else if (button == gamesButton) {
-			if (character.getHunger() < HUNGER_GAME_REJECT) {
+			if (character.getHunger() < HUNGER_GAME_REJECT && character.getMood() > Character.MAX_VALUE / 5) {
 				splash.showSplash(Translation.tr("dont_want_play"));
 			} else {
 				canvas.pushState(gamesMenuState);
