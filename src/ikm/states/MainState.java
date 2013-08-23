@@ -26,19 +26,25 @@ import javax.microedition.lcdui.game.Sprite;
 import ikm.Button;
 import ikm.FoodSelector;
 import ikm.GameState;
+import ikm.Main;
 import ikm.MainCanvas;
 import ikm.ProgressBar;
 import ikm.Res;
+import ikm.Settings;
 import ikm.Splash;
 import ikm.Translation;
 import ikm.Button.ButtonListener;
 import ikm.FoodSelector.FoodListener;
+import ikm.game.Character;
 import ikm.game.Food;
 import ikm.game.Game;
 import ikm.game.World;
 import ikm.util.Maths;
 
 public class MainState extends GameState implements ButtonListener, FoodListener {
+	public static final int MOOD_FOOD_REJECT = Settings.getEntry("mood_food_reject");
+	public static final int HUNGER_GAME_REJECT = Settings.getEntry("hunger_game_reject");
+	
 	private LayerManager lm = new LayerManager();
 	private Sprite background;
 	private Sprite facesprite;
@@ -92,7 +98,7 @@ public class MainState extends GameState implements ButtonListener, FoodListener
 		
 		gamesMenuState = new MenuState("Games", canvas, game);
 		
-		splash = new Splash(canvas.getWidth() / 2, canvas.getHeight() / 2);
+		splash = new Splash(canvas.getWidth() / 2, canvas.getHeight() / 2, canvas);
 		addClickable(foodSelector);
 		addClickable(feedButton);
 		addClickable(gamesButton);
@@ -113,7 +119,49 @@ public class MainState extends GameState implements ButtonListener, FoodListener
 		foodSelector.paint(g);
 		splash.paint(g);
 	}
+	
+	private int findProblems(int[] arr) {
+		int c = 0;
+		if (world.getTrash() > 15)
+			arr[c++] = 0;
+		
+		if (character.getHunger() < Character.EAT_STARVATION)
+			arr[c++] = 1;
+		
+		if (character.getHp() < Character.MAX_VALUE / 5)
+			arr[c++] = 2;
+		
+		if (character.getMood() < Character.MAX_VALUE / 5)
+			arr[c++] = 3;
+		
+		return c;
+	}
 
+	private int[] problems = new int[10];
+	private void showAlert() {
+		int size = 0;
+
+		if (Main.rand.nextInt(8) == 1 && (size = findProblems(problems)) > 0) {
+			switch (problems[Main.rand.nextInt(size)]) {
+			case 0: // Trash too high
+				splash.showSplash(Translation.tr("too_many_trash"));
+				break;
+
+			case 1: // Too hunger
+				splash.showSplash(Translation.tr("i_am_hunger"));
+				break;
+
+			case 2: // Low hp
+				splash.showSplash(Translation.tr("i_am_ill"));
+				break;
+				
+			case 3: // Low mood
+				splash.showSplash(Translation.tr("i_am_depression"));
+				break;
+			}
+		}
+	}
+	
 	public int getUpdateRate() {
 		return Game.STEP_RATE * 1000;
 	}
@@ -126,6 +174,8 @@ public class MainState extends GameState implements ButtonListener, FoodListener
 			hungerBar.setCurrentValue(character.getHunger());
 			moodBar.setCurrentValue(character.getMood());
 		}
+		
+		showAlert();
 		
 		if (character.isDead()) {
 			lm.remove(facesprite);
@@ -140,10 +190,17 @@ public class MainState extends GameState implements ButtonListener, FoodListener
 	
 	public void buttonClicked(Button button) {
 		if (button == feedButton) {
-			splash.showSplash("testtest");
-			foodSelector.setFood(game.getAvailableFood());
+			if (character.getMood() < MOOD_FOOD_REJECT) {
+				splash.showSplash(Translation.tr("dont_want_eat"));
+			} else {
+				foodSelector.setFood(game.getAvailableFood());
+			}
 		} else if (button == gamesButton) {
-			canvas.pushState(gamesMenuState);
+			if (character.getHunger() < HUNGER_GAME_REJECT) {
+				splash.showSplash(Translation.tr("dont_want_play"));
+			} else {
+				canvas.pushState(gamesMenuState);
+			}
 		}
 	}
 	

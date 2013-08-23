@@ -109,7 +109,7 @@ public abstract class GameState {
 	public boolean needExtraRedraw() {
 		return false;
 	}
-	
+		
 	public abstract void update();
 	public abstract void paint(Graphics g);
 	public abstract int getUpdateRate();

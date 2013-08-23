@@ -21,6 +21,7 @@ package ikm;
 import ikm.GameState.Clickable;
 import ikm.util.Maths;
 
+import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.game.Sprite;
 
@@ -49,6 +50,7 @@ public class Button implements Clickable {
 	public void paint(Graphics g) {
 		g.setColor(0xB6D8F9);
 		sprite.paint(g);
+		g.setFont(Main.font);
 		g.drawString(text, x + width / 2, y + height / 2 + 5,
 				Graphics.BASELINE | Graphics.HCENTER);
 	}

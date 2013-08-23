@@ -1,7 +1,7 @@
 eat_decrease_speed = 6 // 4 hours full hp depletion
 step_rate = 1
 max_value = 100000
-initial_value = 50000
+initial_value = 10000
 adaptation_max = 10
 adaptation_rate = 1
 adaptation_decrease_rate = 300 // 1 per 300 seconds
@@ -11,3 +11,5 @@ eat_starvation_mood_effect = 5
 trash_mood_effect = 50 // / 100 trash items * second
 trash_health_effect = 50
 sorting_game_mood_effect = 500
+mood_food_reject = 20000
+hunger_game_reject = 20000

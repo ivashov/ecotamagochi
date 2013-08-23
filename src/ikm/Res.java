@@ -60,8 +60,21 @@ public class Res {
 	public static Image back;
 	
 	public static void initialize() throws IOException {
-		face = Image.createImage("/face/face1.png");
-		faceDead = Image.createImage("/face/face1dead.png");
+		if (true) {
+			face = Image.createImage("/face/face1.png");
+			faceDead = Image.createImage("/face/face1dead.png");
+			back = Image.createImage("/scene_day.jpg");
+		} else if (true) {
+			face = Image.createImage("/face/facestub.png");
+			faceDead = Image.createImage("/face/facestubdead.png");
+			back = Image.createImage("/scene_day.jpg");
+		} else {
+			face = Image.createImage("/face/face2.gif");
+			faceDead = Image.createImage("/face/facestubdead.png");
+			back = Image.createImage("/distant-sun.jpg");
+		}
+		
+
 		progressbar = Image.createImage("/progressbar.png");
 		button = Image.createImage("/button2.png");
 		foodImg = Image.createImage("/food.png");
@@ -78,7 +91,7 @@ public class Res {
 		icoHunger = Image.createImage("/icons/ico_hungry.png");
 		icoMood = Image.createImage("/icons/ico_happy.png");
 		
-		back = Image.createImage("/scene_day.jpg");
+		
 	}
 	
 	public static void loadFood(Game game) throws IOException {

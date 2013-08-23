@@ -53,7 +53,7 @@ public class Food {
 	public void feed(Character character, World world) {
 		if (foodCount == 0 || character.isDead())
 			return;
-		foodCount--;
+		//foodCount--;
 		
 		world.addTrash(trash);
 		

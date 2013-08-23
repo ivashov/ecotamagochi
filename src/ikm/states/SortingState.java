@@ -28,6 +28,7 @@ import ikm.Translation;
 import ikm.game.World;
 import ikm.util.Maths;
 
+import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.game.Sprite;
 
@@ -126,7 +127,7 @@ public class SortingState extends GameState {
 			changeItemsLeftString(remain);
 			
 			if (remain < 0)
-				canvas.popState();
+				canvas.back();
 			
 			createItem();
 		}
@@ -173,6 +174,7 @@ public class SortingState extends GameState {
 		if (missItem != null)
 			missItem.paint(g);
 		
+		g.setFont(Main.font);
 		g.setColor(0x30aaff);
 		g.drawString(itemsLeft, canvas.getWidth() / 2, 8, Graphics.TOP | Graphics.HCENTER);
 	}

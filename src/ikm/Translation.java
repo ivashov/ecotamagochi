@@ -23,9 +23,10 @@ public class Translation {
 	
 	public static String tr(String key) {
 		String str = (String) trans.get(key);
-		if (str == null)
-			return "<no data>";
-		else
+		if (str == null) {
+			Log.err("Can't translate string \"" + key + "\"");
+			return key;
+		} else
 			return str;
 	}
 }

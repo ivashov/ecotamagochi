@@ -31,6 +31,7 @@ import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
+import javax.microedition.lcdui.Font;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
 import javax.microedition.rms.RecordStore;
@@ -39,6 +40,7 @@ import javax.microedition.rms.RecordStoreNotFoundException;
 
 public class Main extends MIDlet implements CommandListener {
 	public static final Random rand = new Random();
+	public static final Font font = Font.getDefaultFont();
 	static {
 		try {
 			Reader reader = new InputStreamReader(Main.class.getResourceAsStream("/config.txt"));
@@ -156,7 +158,7 @@ public class Main extends MIDlet implements CommandListener {
 		}
 	}
 	
-	public final static int STORAGE_VERSION = 5;
+	public final static int STORAGE_VERSION = 1;
 	public void saveGame() throws RecordStoreException {
 		RecordStore rms = null;
 		try {

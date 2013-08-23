@@ -34,6 +34,7 @@ public class MainCanvas extends GameCanvas implements Runnable {
 	private long gameTime;
 
 	private Image darkImage;
+	private Graphics g;
 	
 	protected MainCanvas() {
 		super(false);
@@ -88,13 +89,15 @@ public class MainCanvas extends GameCanvas implements Runnable {
 		}
 	}
 	
-	public void redraw(Graphics g) {
-		currentState().render(g, previousState());
-		flushGraphics();
+	public void redraw() {
+		synchronized (this) {
+			currentState().render(g, previousState());
+			flushGraphics();
+		}
 	}
 	
 	public void run() {
-		Graphics g = getGraphics();
+		g = getGraphics();
 		darkImage = generateTransparentImage();
 		gameTime = System.currentTimeMillis();
 		
@@ -103,7 +106,8 @@ public class MainCanvas extends GameCanvas implements Runnable {
 				GameState state = currentState();
 				int rate = state.getUpdateRate();
 
-				redraw(g);
+				currentState().render(g, previousState());
+				flushGraphics();
 				
 				if (System.currentTimeMillis() >= gameTime) {
 					state.update();
