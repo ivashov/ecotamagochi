@@ -15,3 +15,4 @@ restart:Заново
 about:Об игре
 back:Назад
 quit:Выход
+lightoff:Свет

@@ -12,7 +12,6 @@ public class Splash {
 	private boolean active = false;
 	private int steps;
 	private String text;
-	private Font font;
 	
 	private int threadNumber = 0;
 	private Thread splashThread;
@@ -22,13 +21,12 @@ public class Splash {
 		this.x = x;
 		this.y = y;
 		this.canvas = canvas;
-		font = Font.getFont(Font.FACE_SYSTEM, Font.STYLE_BOLD, Font.SIZE_LARGE);
 	}
 	
 	public void paint(Graphics g) {
 		if (!active)
 			return;
-		g.setFont(font);
+		g.setFont(Main.largeFont);
 		g.setColor(0x00aaff);
 		g.drawString(text, x, y - steps * MOVE_PRE_FRAME, Graphics.TOP | Graphics.HCENTER);
 	}

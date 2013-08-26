@@ -4,11 +4,10 @@ import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 
 import ikm.GameState;
+import ikm.Main;
 import ikm.MainCanvas;
 
 public class AboutState extends GameState {
-	private Font font = Font.getFont(Font.FACE_SYSTEM, Font.STYLE_PLAIN, Font.SIZE_LARGE);
-	
 	public AboutState(String name, MainCanvas canvas) {
 		super(name, canvas);
 	}
@@ -21,7 +20,7 @@ public class AboutState extends GameState {
 		renderParent(g);
 		
 		int x = canvas.getWidth() / 2;
-		g.setFont(font);
+		g.setFont(Main.largeFont);
 		g.setColor(0xaaeeff);
 
 		g.drawString("About", x, 16, Graphics.TOP | Graphics.HCENTER);

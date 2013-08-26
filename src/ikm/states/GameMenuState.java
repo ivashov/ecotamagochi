@@ -86,7 +86,7 @@ public class GameMenuState extends GameState implements ButtonListener {
 			canvas.popState();
 			canvas.pushState(sortingState);
 		} else if (button == lightoffButton) {
-			lightoffState = new LightOffState(canvas);
+			lightoffState = new LightOffState(canvas, game);
 			canvas.popState();
 			canvas.pushState(lightoffState);
 		}

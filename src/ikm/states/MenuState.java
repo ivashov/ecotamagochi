@@ -73,4 +73,10 @@ public class MenuState extends GameState implements ButtonListener {
 			canvas.quit();
 		}
 	}
+	
+	public boolean clicked(int x, int y) {
+		if (!super.clicked(x, y))
+			canvas.back();
+		return true;
+	}
 }
