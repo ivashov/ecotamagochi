@@ -34,11 +34,13 @@ import ikm.util.Maths;
 public class GameMenuState extends GameState implements ButtonListener {
 	private Button mazeButton;
 	private Button sortingButton;
+	private Button lightoffButton;
 	
 	private int centerX;
 	
 	private MazeState mazeState;
 	private SortingState sortingState;
+	private LightOffState lightoffState;
 	private Game game;
 	
 	public GameMenuState(String name, MainCanvas canvas, Game game) {
@@ -48,11 +50,14 @@ public class GameMenuState extends GameState implements ButtonListener {
 		
 		mazeButton = new Button(centerX, 30, Translation.tr("maze"));
 		sortingButton = new Button(centerX, 70, Translation.tr("sorting"));
+		lightoffButton = new Button(centerX, 110, Translation.tr("lightoff"));
 		
 		addClickable(mazeButton);
 		addClickable(sortingButton);
+		addClickable(lightoffButton);
 		mazeButton.setListener(this);
 		sortingButton.setListener(this);
+		lightoffButton.setListener(this);
 	}
 	
 	public void update() {
@@ -64,6 +69,7 @@ public class GameMenuState extends GameState implements ButtonListener {
 		
 		mazeButton.paint(g);
 		sortingButton.paint(g);
+		lightoffButton.paint(g);
 	}
 
 	public int getUpdateRate() {
@@ -79,6 +85,10 @@ public class GameMenuState extends GameState implements ButtonListener {
 			sortingState = new SortingState(canvas, game.getWorld(), game.getCharacter());
 			canvas.popState();
 			canvas.pushState(sortingState);
+		} else if (button == lightoffButton) {
+			lightoffState = new LightOffState(canvas);
+			canvas.popState();
+			canvas.pushState(lightoffState);
 		}
 	}
 	

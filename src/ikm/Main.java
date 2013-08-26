@@ -38,9 +38,14 @@ import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
 import javax.microedition.rms.RecordStoreNotFoundException;
 
+import com.nokia.mid.ui.VirtualKeyboard;
+
+
+
 public class Main extends MIDlet implements CommandListener {
 	public static final Random rand = new Random();
 	public static final Font font = Font.getDefaultFont();
+	public static boolean noHardwareBack;
 	static {
 		try {
 			Reader reader = new InputStreamReader(Main.class.getResourceAsStream("/config.txt"));
@@ -79,6 +84,13 @@ public class Main extends MIDlet implements CommandListener {
 	public Main() {
 		//Log.disable();
 		display = Display.getDisplay(this);
+		
+        String keyboard = System.getProperty("com.nokia.keyboard.type");
+        if (keyboard != null && keyboard.equalsIgnoreCase("OnekeyBack")) {
+        	noHardwareBack = false;
+        } else {
+        	noHardwareBack = true;
+        }
 	}
 	
 	protected void destroyApp(boolean unconditional)
@@ -97,6 +109,11 @@ public class Main extends MIDlet implements CommandListener {
 	}
 
 	protected void startApp() throws MIDletStateChangeException {
+        if (!noHardwareBack) {
+            VirtualKeyboard.hideOpenKeypadCommand(true);
+            VirtualKeyboard.suppressSizeChanged(true);
+        }
+
 		try {
 			Res.initialize();
 			Res.loadFood(game);
@@ -282,5 +299,14 @@ public class Main extends MIDlet implements CommandListener {
 		display.setCurrent(canvas);
 		Thread thread = new Thread(canvas, "Game thread restarted");
 		thread.start();
+	}
+
+	public void quit() {
+		try {
+			destroyApp(false);
+		} catch (MIDletStateChangeException e) {
+			e.printStackTrace();
+		}
+		notifyDestroyed();
 	}
 }

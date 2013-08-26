@@ -77,7 +77,7 @@ public class MainState extends GameState implements ButtonListener, FoodListener
 
 		background = new Sprite(Res.back);
 		background.setPosition(Maths.posCenter(canvas.getWidth(), background.getWidth()),
-				Maths.posCenter(canvas.getHeight(), background.getHeight()) - 50);
+				Maths.posCenter(canvas.getHeight(), background.getHeight()) - 25);
 		facesprite = new Sprite(Res.face);
 		deadsprite = new Sprite(Res.faceDead);
 		
@@ -198,7 +198,6 @@ public class MainState extends GameState implements ButtonListener, FoodListener
 	
 	public void buttonClicked(Button button) {
 		if (button == feedButton) {
-			System.out.println("qweqweqweqweqwe");
 			if (character.getMood() < MOOD_FOOD_REJECT && character.getHunger() > Character.MAX_VALUE / 5) {
 				splash.showSplash(Translation.tr("dont_want_eat"));
 			} else {

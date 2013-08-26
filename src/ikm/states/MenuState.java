@@ -13,6 +13,7 @@ public class MenuState extends GameState implements ButtonListener {
 	private Button backButton;
 	private Button restartButton;
 	private Button aboutButton;
+	private Button quitButton;
 	
 	private int x;
 	private int y = 16;
@@ -28,14 +29,17 @@ public class MenuState extends GameState implements ButtonListener {
 		backButton = new Button(x, y += buttonHeight, Translation.tr("continue"));
 		restartButton = new Button(x, y += buttonHeight, Translation.tr("restart"));
 		aboutButton = new Button(x, y += buttonHeight, Translation.tr("about"));
+		quitButton = new Button(x, y += buttonHeight, Translation.tr("quit"));
 		
 		addClickable(backButton);
 		addClickable(restartButton);
 		addClickable(aboutButton);
+		addClickable(quitButton);
 		
 		backButton.setListener(this);
 		restartButton.setListener(this);
 		aboutButton.setListener(this);
+		quitButton.setListener(this);
 		
 		aboutState = new AboutState("About", canvas);
 	}
@@ -50,6 +54,7 @@ public class MenuState extends GameState implements ButtonListener {
 		backButton.paint(g);
 		restartButton.paint(g);
 		aboutButton.paint(g);
+		quitButton.paint(g);
 	}
 
 	public int getUpdateRate() {
@@ -64,6 +69,8 @@ public class MenuState extends GameState implements ButtonListener {
 		} else if (button == aboutButton) {
 			canvas.popState();
 			canvas.pushState(aboutState);
+		} else if (button == quitButton) {
+			canvas.quit();
 		}
 	}
 }

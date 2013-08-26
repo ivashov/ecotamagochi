@@ -9,3 +9,9 @@ i_am_depression:Я в полохом настроении
 dont_want_eat:Не хочу есть
 dont_want_play:Не хочу играть
 too_many_trash:Слишком много мусора
+menu:Меню
+continue:Продолжить
+restart:Заново
+about:Об игре
+back:Назад
+quit:Выход

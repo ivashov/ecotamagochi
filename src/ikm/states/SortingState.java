@@ -62,7 +62,7 @@ public class SortingState extends GameState {
 	
 	private boolean pointerDown = false;
 	private int px, py;
-	private int colorIndex = 0;
+	//private int colorIndex = 0;
 	private static final int[] BACK_COLORS = {0x1280a0, 0x2F6F8B, 0x4D5F77, 0x6B4F63, 0x883F4F, 0xA62F3B, 0xC41F27, 0xE20F13, 0xff0000};
 	private String itemsLeft;
 	private Sprite background;
@@ -90,9 +90,9 @@ public class SortingState extends GameState {
 		binBack3.setPosition(binPaper.getX(), binPaper.getY());
 		
 		background = new Sprite(Res.back);
-		background.setPosition(-313, -80);
+		background.setPosition(-313, -30);
 		
-		Image tmp = Image.createImage(Res.back, 313, 80 + canvas.getHeight() - 63, canvas.getWidth(), 63, 0);
+		Image tmp = Image.createImage(Res.back, 313, 30 + canvas.getHeight() - 63, canvas.getWidth(), 63, 0);
 		
 		background2 = new Sprite(tmp);
 		background2.setPosition(0, canvas.getHeight() - 63);
@@ -146,7 +146,7 @@ public class SortingState extends GameState {
 		if (activeItem.getY() + activeItem.getHeight() > binPlastic.getY() + 5) {
 			missItem = activeItem;
 			itemsFail++;
-			colorIndex = BACK_COLORS.length - 1;
+			//colorIndex = BACK_COLORS.length - 1;
 			createItem();
 		}
 		

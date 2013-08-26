@@ -18,8 +18,11 @@
 
 package ikm;
 
+import ikm.util.Maths;
+
 import java.util.Vector;
 
+import javax.microedition.io.file.FileConnection;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.game.GameCanvas;
@@ -34,9 +37,11 @@ public class MainCanvas extends GameCanvas implements Runnable {
 	private Image darkImage;
 	private Graphics g;
 	private Main main;
+	private boolean backVisible = false;
 	
 	protected MainCanvas(Main main) {
 		super(false);
+		setFullScreenMode(true);
 		
 		this.main = main;
 	}
@@ -65,6 +70,11 @@ public class MainCanvas extends GameCanvas implements Runnable {
 
 	protected void pointerPressed(int x, int y) {
 		synchronized (this) {
+			if (backVisible && Maths.pointInRect(x, y, getWidth() - 32, getHeight() - 16, 32, 16)) {
+				back();
+				return;
+			}
+			
 			currentState().clicked(x, y);
 			if (currentState().needExtraRedraw()) {
 				this.notifyAll();
@@ -97,6 +107,10 @@ public class MainCanvas extends GameCanvas implements Runnable {
 		}
 	}
 	
+	public void quit() {
+		main.quit();
+	}
+	
 	public void stop() {
 		synchronized (this) {
 			while (back())
@@ -108,7 +122,7 @@ public class MainCanvas extends GameCanvas implements Runnable {
 		}
 	}
 	
-	public void run() {
+	private void safeRun() {
 		g = getGraphics();
 		darkImage = generateTransparentImage();
 		gameTime = System.currentTimeMillis();
@@ -119,6 +133,7 @@ public class MainCanvas extends GameCanvas implements Runnable {
 				int rate = state.getUpdateRate();
 
 				currentState().render(g, previousState());
+				paintBackButton(g);
 				flushGraphics();
 				
 				if (System.currentTimeMillis() >= gameTime) {
@@ -140,10 +155,25 @@ public class MainCanvas extends GameCanvas implements Runnable {
 		}
 	}
 	
+	public void run() {
+		safeRun();
+	}
+	
+	private void paintBackButton(Graphics g) {
+		if (Main.noHardwareBack && states.size() > 1) {
+			int posX = getWidth();
+			int posY = getHeight();
+			backVisible = true;
+			g.setColor(~0);
+			g.drawString(Translation.tr("back"), posX, posY, Graphics.BOTTOM | Graphics.RIGHT);
+		} else
+			backVisible = false;
+	}
+	
 	private Image generateTransparentImage() {
 		int[] rgb = new int[getWidth() * getHeight()];
 		for (int i = 0; i < rgb.length; i++)
-			rgb[i] = 0xbf000010;
+			rgb[i] = 0xcb000010;
 		
 		Image img = Image.createRGBImage(rgb, getWidth(), getHeight(), true);
 		return img;
