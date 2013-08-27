@@ -1,5 +1,5 @@
 MIDlet-Version: 0.0.1
-MIDlet-Vendor: EcoTamagochi Team
+MIDlet-Vendor: Kirill Ivashov
 Nokia-MIDlet_On-Screen-Keypad: no
 MIDlet-Jar-URL: EcoTamagochi.jar
 MicroEdition-Configuration: CLDC-1.0
