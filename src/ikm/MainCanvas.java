@@ -22,7 +22,6 @@ import ikm.util.Maths;
 
 import java.util.Vector;
 
-import javax.microedition.io.file.FileConnection;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.game.GameCanvas;

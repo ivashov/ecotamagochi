@@ -293,7 +293,12 @@ public class Main extends MIDlet implements CommandListener {
 		canvas = new MainCanvas(this);
 		state = new MainState(game, canvas);
 		canvas.pushState(state);
-		
+		try {
+			Res.loadFood(game);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		canvas.setCommandListener(this);
 		canvas.addCommand(backCommand);
 		

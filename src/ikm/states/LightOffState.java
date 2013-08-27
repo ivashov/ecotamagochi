@@ -154,7 +154,6 @@ public class LightOffState extends GameState {
 					currentRate--;
 				if (currentRate < 2)
 					currentRate = 2;
-				System.out.println(score);
 
 				return true;
 			}
