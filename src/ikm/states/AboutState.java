@@ -31,6 +31,20 @@ public class AboutState extends GameState {
 		g.drawString("Version: 0.0.1", x, 96, Graphics.TOP | Graphics.HCENTER);
 		g.drawString("Kirill Ivashov", x, 128, Graphics.TOP | Graphics.HCENTER);
 		g.drawString("ivashov@cs.karelia.ru", x, 160, Graphics.TOP | Graphics.HCENTER);
+		
+		g.setFont(Main.smallFont);
+		g.drawString("This application is a part of grant",
+				x, 192, Graphics.TOP | Graphics.HCENTER);
+		g.drawString("KA179 of Karelia ENPI CBC",
+				x, 192 + 16, Graphics.TOP | Graphics.HCENTER);
+		g.drawString("programme, which is co-funded by", 
+				x, 192 + 16 * 2, Graphics.TOP | Graphics.HCENTER);
+		g.drawString("the European Union,",
+				x, 192 + 16 * 3, Graphics.TOP | Graphics.HCENTER);
+		g.drawString("the Russian Federation",
+				x, 192 + 16 * 4, Graphics.TOP | Graphics.HCENTER);
+		g.drawString("and the Republic of Finland",
+				x, 192 + 16 * 5, Graphics.TOP | Graphics.HCENTER);
 	}
 
 	public int getUpdateRate() {

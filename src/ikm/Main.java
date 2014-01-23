@@ -40,12 +40,11 @@ import javax.microedition.rms.RecordStoreNotFoundException;
 
 import com.nokia.mid.ui.VirtualKeyboard;
 
-
-
 public class Main extends MIDlet implements CommandListener {
 	public static final Random rand = new Random();
 	public static final Font font = Font.getDefaultFont();
 	public static final Font largeFont = Font.getFont(Font.FACE_SYSTEM, Font.STYLE_PLAIN, Font.SIZE_LARGE);
+	public static final Font smallFont = Font.getFont(Font.FACE_SYSTEM, Font.STYLE_PLAIN, Font.SIZE_SMALL);
 	public static boolean noHardwareBack;
 	static {
 		try {
