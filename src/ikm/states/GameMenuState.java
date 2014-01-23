@@ -32,13 +32,13 @@ import ikm.game.Game;
 import ikm.util.Maths;
 
 public class GameMenuState extends GameState implements ButtonListener {
-	//private Button mazeButton;
+	private Button mazeButton;
 	private Button sortingButton;
 	private Button lightoffButton;
 	
 	private int centerX;
 	
-	//private MazeState mazeState;
+	private GameState mazeState;
 	private SortingState sortingState;
 	private LightOffState lightoffState;
 	private Game game;
@@ -48,14 +48,14 @@ public class GameMenuState extends GameState implements ButtonListener {
 		this.game = game;
 		centerX = Maths.posCenter(canvas.getWidth(), Res.button.getWidth());
 		
-		//mazeButton = new Button(centerX, 30, Translation.tr("maze"));
+		mazeButton = new Button(centerX, 110, Translation.tr("maze"));
 		sortingButton = new Button(centerX, 30, Translation.tr("sorting"));
 		lightoffButton = new Button(centerX, 70, Translation.tr("lightoff"));
 		
-		//addClickable(mazeButton);
+		addClickable(mazeButton);
 		addClickable(sortingButton);
 		addClickable(lightoffButton);
-		//mazeButton.setListener(this);
+		mazeButton.setListener(this);
 		sortingButton.setListener(this);
 		lightoffButton.setListener(this);
 	}
@@ -67,7 +67,7 @@ public class GameMenuState extends GameState implements ButtonListener {
 	public void paint(Graphics g) {
 		renderParent(g);
 		
-		//mazeButton.paint(g);
+		mazeButton.paint(g);
 		sortingButton.paint(g);
 		lightoffButton.paint(g);
 	}
@@ -77,11 +77,11 @@ public class GameMenuState extends GameState implements ButtonListener {
 	}
 	
 	public void buttonClicked(Button button) {
-		/*if (button == mazeButton) {
-			mazeState = new MazeState(canvas);
+		if (button == mazeButton) {
+			mazeState = new SokobanState(canvas);
 			canvas.popState();
 			canvas.pushState(mazeState);
-		} else*/
+		} else
 		if (button == sortingButton) {
 			sortingState = new SortingState(canvas, game.getWorld(), game.getCharacter());
 			canvas.popState();

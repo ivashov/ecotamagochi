@@ -61,6 +61,8 @@ public class Res {
 	
 	public static Image bulb;
 	
+	public static Image sTiles;
+	
 	public static void initialize() throws IOException {
 		if (true) {
 			face = Image.createImage("/face/face1.png");
@@ -94,6 +96,8 @@ public class Res {
 		icoMood = Image.createImage("/icons/ico_happy.png");
 		
 		bulb = Image.createImage("/bulb.png");
+		
+		sTiles = Image.createImage("/stiles.png");
 	}
 	
 	public static void loadFood(Game game) throws IOException {

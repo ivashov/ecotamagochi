@@ -20,6 +20,7 @@ package ikm;
 
 import ikm.game.Game;
 import ikm.states.MainState;
+import ikm.states.SokobanState;
 import ikm.util.ByteArray;
 
 import java.io.IOException;
@@ -125,6 +126,7 @@ public class Main extends MIDlet implements CommandListener {
 		canvas = new MainCanvas(this);
 		state = new MainState(game, canvas);
 		canvas.pushState(state);
+		canvas.pushState(new SokobanState(canvas));
 		canvas.setCommandListener(this);
 		canvas.addCommand(backCommand);
 		
