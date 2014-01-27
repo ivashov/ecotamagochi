@@ -18,6 +18,8 @@
 
 package ikm;
 
+import ikm.states.MazeState;
+import ikm.states.SokobanState;
 import ikm.util.Maths;
 
 import java.util.Vector;
@@ -159,7 +161,7 @@ public class MainCanvas extends GameCanvas implements Runnable {
 	}
 	
 	private void paintBackButton(Graphics g) {
-		if (Main.noHardwareBack && states.size() > 1) {
+		if (Main.noHardwareBack && states.size() > 1 && !(states.lastElement() instanceof SokobanState)) {
 			int posX = getWidth();
 			int posY = getHeight();
 			backVisible = true;

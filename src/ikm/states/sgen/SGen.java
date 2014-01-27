@@ -13,6 +13,10 @@ class Set {
 		hashtable.put(map, obj);
 	}
 	
+	public void add(Object object) {
+		hashtable.put(object, obj);
+	}
+	
 	public Enumeration elements() {
 		return hashtable.keys();
 	}
@@ -25,6 +29,17 @@ class Set {
 		for (Enumeration en = set.elements(); en.hasMoreElements();) {
 			hashtable.remove(en.nextElement());
 		}
+	}
+
+	public void add(Set resultSet) {
+		for (Enumeration en = resultSet.elements(); en.hasMoreElements();) {
+			hashtable.put(en.nextElement(), obj);
+		}
+
+	}
+
+	public int size() {
+		return hashtable.size();
 	}
 }
 
@@ -189,8 +204,16 @@ class Map {
         return hash == m.hash;
     }
 
-    public int value() {
-        return 100 * (pushes + 4 * lines - 12 * cratePositions.length);
+    private int value;
+    public int value() {    	
+        // Crate should not be in goal
+        for (int i = 0; i < map.length; i++) {
+        	if ((map[i] & (Map.CRATE | Map.END)) != 0) {
+        		value -= 200;
+        	}
+        }
+    	
+        return value += 100 * (pushes + 4 * lines - 12 * cratePositions.length);
     }
 
     public boolean applyTemplate(int x0, int y0, String t) {
@@ -255,8 +278,8 @@ public class SGen {
     }
     public static Random r;
 
-    static Set generate(Map map, int w, int h) {
-        int c = 3;
+    static Set generate(Map map, int w, int h, int crates) {
+        int c = crates;
 
         map.setCrateCount(c);
         
@@ -281,6 +304,7 @@ public class SGen {
         map.commit();
         map.dump();
 
+        Set allSet = new Set();
         Set startSet = new Set();
         startSet.add(map);
 
@@ -295,24 +319,29 @@ public class SGen {
             if (System.currentTimeMillis() - beginTime > 1200)
             	break;
             
-            resultSet = tri(startSet, prevSet, depth);
+            resultSet = tri(startSet, prevSet, allSet, depth);
             if (resultSet.isEmpty())
                 break;
 
             depth++;
         }
 
+        System.out.println("AllSet size = " + allSet.size());
+        
         return prevSet;
     }
 
-    static Set tri(Set startSet, Set prevSet, int depth) {
+    static Set tri(Set startSet, Set prevSet, Set allSet, int depth) {
         Set resultSet = expand(prevSet);
-        Set tempSet = startSet;
+        //Set tempSet = startSet;
 
-        for (int i = 1; i < depth; i++) {
+        resultSet.removeAll(allSet);
+        allSet.add(resultSet);
+        
+        /*for (int i = 1; i < depth; i++) {
             resultSet.removeAll(tempSet);
             tempSet = expand(tempSet);
-        }
+        }*/
 
         return resultSet;
     }
@@ -345,10 +374,6 @@ public class SGen {
                 // Player next position
                 int nx = px + dir.x;
                 int ny = py + dir.y;
-                
-                // Crate position
-                int cx = crate.x;
-                int cy = crate.y;
 
                 int push = 1;
                 // REACH always means that tile is free
@@ -483,7 +508,7 @@ public class SGen {
         +  " ..  ",
         }; 
     
-    static String rotate90(String arr25) {
+    private static String rotate90(String arr25) {
     	char[] ret = new char[25];
     	
         for (int i = 0; i < 5; i++) {
@@ -495,16 +520,33 @@ public class SGen {
         return new String(ret);
     }
     
+    private static String flipHorizontal(String arr25) {
+    	char[] ret = new char[25];
+    	
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                ret[i + (j * 5)] = arr25.charAt((5 - i - 1) + (j * 5));
+            }
+        }
+        
+        return new String(ret);
+    }
+    
     // Rotate templates
     static {
     	int l = templates.length;
-    	templates1 = new String[l * 4];
+    	templates1 = new String[l * 4 * 2];
     	
     	for (int i = 0; i < l; i++)
     		templates1[i] = templates[i];
     	
     	for (int i = l; i < l * 4; i++) {
     		templates1[i] = rotate90(templates1[i - l]);
+    	}
+    	
+    	// There no need to flip vertically
+    	for (int i = l * 4; i < l * 4 * 2; i++) {
+    		templates1[i] = flipHorizontal(templates1[i - l * 4]);
     	}
     }
 
@@ -581,7 +623,7 @@ v:
                 }
             }
         }*/
-        
+                
         return true;
     }
 
@@ -600,12 +642,9 @@ v:
         r = new Random();
         Map best = null;
         do {
-        	//Map map = new Map("in.txt", 7, 7);
         	Map map = generateMap(r, w, h);
-        	Set set = generate(map, map.w, map.h);
+        	Set set = generate(map, map.w, map.h, 3);
         
-        	//System.out.println("========");
-
         	best = null;
         	int max = Integer.MIN_VALUE;
         	for (Enumeration en = set.elements(); en.hasMoreElements();) {
@@ -636,6 +675,52 @@ v:
         s.setPlayer(px, py);
         
         return s;
+    }
+    
+    
+    private static Thread generatingThread = null;
+    private static Sokoban readyInstance = null;
+    private static Object lock = new Object();
+    
+    public static void startBackgroundThread() {
+    	System.err.println("SGen: Starting sokoban thread");
+    	generatingThread = new Thread() {
+    		public void run() {
+    			Sokoban tmp = generateSokobalLevel(7, 9);
+    			System.err.println("SGen: Work ready, storing result");
+    			synchronized (lock) {
+    				readyInstance = tmp;
+    			}
+    		}
+    	};
+    	generatingThread.setPriority(Thread.MIN_PRIORITY);
+    	generatingThread.start();
+    }
+    
+    public static boolean isReady() {
+    	synchronized (lock) {
+    		return readyInstance != null;
+    	}
+    }
+    
+    public static Sokoban getSokobanLevel() {
+    	synchronized (lock) {
+    		if (readyInstance == null) {
+    			System.err.println("SGen: Waiting thread finish");
+        		try {
+    				generatingThread.join();
+    			} catch (InterruptedException e) {
+    				e.printStackTrace();
+    			}
+    		} else {
+    			System.err.println("SGen: using cached level");
+    		}
+    	
+    		Sokoban ret = readyInstance;
+    		readyInstance = null;
+    		startBackgroundThread();
+    		return ret;
+		}
     }
 }
 

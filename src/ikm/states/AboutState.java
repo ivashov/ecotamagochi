@@ -29,7 +29,7 @@ public class AboutState extends GameState {
 
 		int y = 64;
 		g.drawString("EcoTamagochi", x, y, Graphics.TOP | Graphics.HCENTER);
-		g.drawString("Version: 0.0.1", x, y + 20, Graphics.TOP | Graphics.HCENTER);
+		g.drawString("Version: 0.0.2", x, y + 20, Graphics.TOP | Graphics.HCENTER);
 		g.drawString("Kirill Ivashov", x, y + 40, Graphics.TOP | Graphics.HCENTER);
 		g.drawString("ivashov@cs.karelia.ru", x, y + 60, Graphics.TOP | Graphics.HCENTER);
 		
