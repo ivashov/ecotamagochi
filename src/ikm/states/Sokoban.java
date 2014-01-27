@@ -11,13 +11,21 @@ public class Sokoban {
 	private int width, height;
 	private int x, y;
 	
-	/*
-	 * 0 - free
-	 * 1 - wall
-	 * 2 - crate
-	 * 3 - end
-	 */
 	private int[][] map;
+	
+	public Sokoban clone() {
+		Sokoban s = new Sokoban(width, height);
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				s.map[x][y] = map[x][y];
+			}
+		}
+		
+		s.x = x;
+		s.y = y;
+
+		return s;
+	}
 	
 	public int getX() {
 		return x;
@@ -53,6 +61,15 @@ public class Sokoban {
 			return WALL;
 	}
 	
+	public void setCell(int x, int y, int v) {
+		map[x][y] = v;
+	}
+	
+	public void setPlayer(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+	
 	public boolean isCell(int x, int y, int type) {
 		return (getCell(x, y) & type) != 0;
 	}
@@ -69,11 +86,13 @@ public class Sokoban {
 				char c = mapStr.charAt(x + y * width);
 				switch (c) {
 				case '#': map[x][y] = WALL; break;
-				case '.': map[x][y] = FREE; break;
-				case 'x': map[x][y] = CRATE; break;
-				case '0': map[x][y] = END; break;
+				case ' ': map[x][y] = FREE; break;
+				case '$': map[x][y] = CRATE; break;
+				case '.': map[x][y] = END; break;
 				case '*': map[x][y] = END | CRATE; break;
-				case 'p': this.x = x; this.y = y; break;
+				
+				case '+': map[x][y] = END; this.x = x; this.y = y; break;
+				case '@': this.x = x; this.y = y; break;
 				default: Log.err("Unknown symbol in map: " + c);
 				}
 			}
@@ -100,18 +119,20 @@ public class Sokoban {
 					arr[i] = '#';
 				else if (isCell(x, y, CRATE) && isCell(x, y, END))
 					arr[i] = '*';
+				else if (isCell(x, y, END) && x == this.x && y == this.y)
+					arr[i] = '+';
 				else if (isCell(x, y, CRATE))
-					arr[i] = 'x';
+					arr[i] = '$';
 				else if (isCell(x, y, END))
-					arr[i] = '0';
-				else
 					arr[i] = '.';
+				else if (getCell(x, y) == FREE && x == this.x && y == this.y)
+					arr[i] = '@';
+				else
+					arr[i] = ' ';
 				
 				i++;
 			}
 		}
-		
-		arr[x + y * width] = 'p';
 		
 		return new String(arr);
 	}

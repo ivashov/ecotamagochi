@@ -6,28 +6,43 @@ import javax.microedition.lcdui.game.TiledLayer;
 import ikm.GameState;
 import ikm.MainCanvas;
 import ikm.Res;
+import ikm.game.Game;
+import ikm.states.sgen.SGen;
 import ikm.util.Maths;
 
 public class SokobanState extends GameState {
 	private TiledLayer tiledLayer;
 	private Sokoban sokoban;
-	
+	private Sokoban first;
+	private int totalHeight;
 	private String map1 
-	= "...*.0"
-	+ ".#..#x"
-	+ "......"
-	+ "......"
-	+ "x#..#x"
-	+ "0....0";
+	= "   * ."
+	+ " #  #$"
+	+ "      "
+	+ "      "
+	+ "$#  #$"
+	+ "+    .";
+	private boolean win = false;
+	private Game game;
+
 	
-	public SokobanState(MainCanvas canvas) {
+	public SokobanState(MainCanvas canvas, Game game) {
 		super("Sokoban", canvas);
+		this.game = game;
 		
-		int width = 6, height = 6;
-		sokoban = new Sokoban(width, height);
-		sokoban.loadFromString(map1);
+		int width = 7, height = 9;
+		sokoban = SGen.generateSokobalLevel(width, height);
+		first = sokoban.clone();
 		
-		tiledLayer = new TiledLayer(sokoban.getWidth(), sokoban.getHeight(), Res.sTiles, 32, 32);
+		totalHeight = ((canvas.getHeight() - 1) / 32) + 1;
+
+		tiledLayer = new TiledLayer(sokoban.getWidth(), totalHeight, Res.sTiles, 32, 32);
+		for (int x = 0; x < width; x++) {
+			for (int y = height; y < totalHeight; y++) {
+				tiledLayer.setCell(x, y, 9);
+			}
+		}
+	
 	}
 
 	public void update() {
@@ -37,7 +52,7 @@ public class SokobanState extends GameState {
 				int c = sokoban.getCell(x, y);
 				
 				if (c == Sokoban.WALL) {
-					idx = 1;
+					idx = ((x + y) & 1) == 0 ? 9 : 10;
 				} else if (c == Sokoban.FREE){
 					idx = 2;
 				} else if (c == Sokoban.END)
@@ -49,11 +64,11 @@ public class SokobanState extends GameState {
 			}
 		}
 		
-		tiledLayer.setCell(sokoban.getX(), sokoban.getY(), 5);
-		
+		tiledLayer.setCell(sokoban.getX(), sokoban.getY(), 6);
 		
 		if (sokoban.countEnds() == 0) {
 			canvas.back();
+			win = true;
 		}
 	}
 
@@ -61,6 +76,13 @@ public class SokobanState extends GameState {
 		g.setColor(0);
 		g.fillRect(0, 0, g.getClipWidth(), g.getClipHeight());
 		tiledLayer.paint(g);
+		
+		g.drawImage(Res.backArrow, 0, g.getClipHeight() - Res.backArrow.getWidth(),
+				Graphics.TOP | Graphics.LEFT);
+		g.drawImage(Res.exitArrow, g.getClipWidth() - Res.exitArrow.getWidth(),
+				g.getClipHeight() - Res.exitArrow.getWidth(),
+				Graphics.TOP | Graphics.LEFT);
+
 	}
 
 	public int getUpdateRate() {
@@ -83,7 +105,25 @@ public class SokobanState extends GameState {
 			else
 				sokoban.move(0, -1);
 		
+		// Check buttons
+		if (x < Res.exitArrow.getWidth() && y > canvas.getHeight() - Res.exitArrow.getWidth()) {
+			// Reset
+			sokoban = first.clone();
+		}
+		
+		if (x > canvas.getWidth() - Res.exitArrow.getWidth() && y > canvas.getHeight() - Res.exitArrow.getHeight()) {
+			canvas.back();
+		}
+		
 		return true;
+	}
+	
+	public void shutdown() {
+		super.shutdown();
+		if (win) {
+			game.getWorld().addTrash(-3 * 2);
+			game.getCharacter().changeMood(10000);
+		}
 	}
 	
 }

@@ -1,9 +1,8 @@
-MIDlet-2: MIDlet-2,,ikm.test.SokobanTest
-MIDlet-1: Main,/ico.png,ikm.Main
+MIDlet-Version: 0.0.1
+MIDlet-Vendor: Kirill Ivashov
+Nokia-MIDlet_On-Screen-Keypad: no
 MIDlet-Jar-URL: EcoTamagochi.jar
 MicroEdition-Configuration: CLDC-1.0
-MIDlet-Version: 0.0.1
-MIDlet-Name: EcoTamagochi
-MIDlet-Vendor: Kirill Ivashov
 MicroEdition-Profile: MIDP-2.1
-Nokia-MIDlet_On-Screen-Keypad: no
+MIDlet-1: Main,/ico.png,ikm.Main
+MIDlet-Name: EcoTamagochi

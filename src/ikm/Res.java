@@ -62,6 +62,8 @@ public class Res {
 	public static Image bulb;
 	
 	public static Image sTiles;
+	public static Image backArrow;
+	public static Image exitArrow;
 	
 	public static void initialize() throws IOException {
 		if (true) {
@@ -98,6 +100,8 @@ public class Res {
 		bulb = Image.createImage("/bulb.png");
 		
 		sTiles = Image.createImage("/stiles.png");
+		backArrow = Image.createImage("/back_arrow.png");
+		exitArrow = Image.createImage("/exit_arrow.png");
 	}
 	
 	public static void loadFood(Game game) throws IOException {

@@ -78,7 +78,7 @@ public class GameMenuState extends GameState implements ButtonListener {
 	
 	public void buttonClicked(Button button) {
 		if (button == mazeButton) {
-			mazeState = new SokobanState(canvas);
+			mazeState = new SokobanState(canvas, game);
 			canvas.popState();
 			canvas.pushState(mazeState);
 		} else

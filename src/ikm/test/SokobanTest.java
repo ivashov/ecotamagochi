@@ -6,10 +6,10 @@ import jmunit.framework.cldc11.TestCase;
 
 public class SokobanTest extends TestCase {
 	private String map1 
-		= "#...#"
-		+ "#.#.#"
-		+ "#px0#"
-		+ ".....";
+		= "#   #"
+		+ "# # #"
+		+ "#@$.#"
+		+ "    ";
 	
 	private Sokoban generate1() {
 		Sokoban s = new Sokoban(5, 4);
@@ -81,10 +81,10 @@ public class SokobanTest extends TestCase {
 		assertEquals(2, s.getY());
 		
 		String m 
-		= "#...#"
-		+ "#.#x#"
-		+ "#..p#"
-		+ ".....";
+		= "#   #"
+		+ "# #$#"
+		+ "#  +#"
+		+ "     ";
 		assertEquals(m, s.toString());
 	}
 
